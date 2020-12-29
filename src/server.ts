@@ -117,18 +117,16 @@ import { Car, cars as cars_list } from './cars';
 
   app.get( "/cars/:make", 
   ( req: Request, res: Response ) => {
-    let { make } = req.query;
-    let car = cars;
-    if ( !make ) {
+    let { make } = req.query.make;
+    let car_list = cars;
+    if ( make ) {
+      car_list = cars.filter((car)=>car.make===make);
+      return res.status(200).send(car_list);
+    }
+    else{
       return res.status(400)
                 .send(`Make is required`);
     }
-    else{
-      car = car.filter((car)=>car.make===make);
-    }
-    
-    return res.status(200)
-              .send(car);
 } );
   // Start the Server
   app.listen( port, () => {
